@@ -52,7 +52,8 @@ function operate() {
   queue = _.without(queue, floor)
 
   // get direction based on current floor and next floor (next floor is the first floor in the queue)
-  direction = queue[0] > floor ? 'up' : 'down'
+  // direction = queue[0] > floor ? 'up' : 'down'
+  direction = queue[0] > floor ? 'up' : queue[0] < floor ? 'down' : direction // if queue[0] === floor, keep direction
 
   // get leavers
   let leavers = _.filter(passengers, { to: floor })
