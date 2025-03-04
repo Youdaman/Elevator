@@ -51,6 +51,9 @@ function operate() {
   // remove current floor from queue
   queue = _.without(queue, floor)
 
+  // get direction based on current floor and next floor (next floor is the first floor in the queue)
+  direction = queue[0] > floor ? 'up' : 'down'
+
   // get leavers
   let leavers = _.filter(passengers, { to: floor })
   leavers.forEach(l => {
@@ -69,7 +72,8 @@ function operate() {
 
   // only pick up boarders if they are going in the same direction
 
-  let boarders = _.filter(requests, r => r.from === floor && ((r.when < floor && direction === 'up') || (r.when > floor && direction === 'down')))
+  // let boarders = _.filter(requests, r => r.from === floor && ((r.when < floor && direction === 'up') || (r.when > floor && direction === 'down')))
+  let boarders = _.filter(requests, { from: floor, button: direction })
   // let boarders = _.filter(requests, r => r.from === floor && r.direction === direction)
   boarders.forEach(b => {
     console.log(`${b.name} is in and going to ${b.to}`)
@@ -93,8 +97,6 @@ function operate() {
     }
     // if queue not empty, add floor to queue based on direction
     else {
-      // get direction based on current floor and next floor (next floor is the first floor in the queue)
-      direction = queue[0] > floor ? 'up' : 'down'
 
       // if direction up, add to front if floor > current floor, otherwise add to back
       if (direction === 'up') {
